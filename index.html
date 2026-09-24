@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro de Ligações — Atendimento</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">●</span>
+        <div>
+          <h1>Registro de Ligações</h1>
+          <p class="brand-sub">Suporte Técnico · Autotrac</p>
+        </div>
+      </div>
+      <label class="date-field">
+        <span>Data</span>
+        <input type="date" id="logDate">
+      </label>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="entries"></div>
+
+    <button id="addEntry" class="add-btn" type="button">
+      <span class="add-btn-icon">+</span> Nova ligação
+    </button>
+  </main>
+
+  <footer class="bottombar">
+    <button id="clearAll" class="ghost-btn" type="button">Limpar tudo</button>
+    <span class="save-status" id="saveStatus">Salvo neste navegador</span>
+  </footer>
+
+  <template id="entryTemplate">
+    <article class="entry" data-id="">
+      <div class="entry-head">
+        <span class="entry-index">01</span>
+        <div class="entry-fields">
+          <label>
+            <span>Telefone</span>
+            <input type="tel" class="f-telefone" placeholder="(00) 00000-0000">
+          </label>
+          <label>
+            <span>Nome</span>
+            <input type="text" class="f-nome" placeholder="Nome do cliente">
+          </label>
+        </div>
+        <button class="remove-btn" type="button" title="Remover ligação">✕</button>
+      </div>
+      <label class="paste-field">
+        <span>Colar aqui</span>
+        <textarea class="f-colar" rows="5" placeholder="Situação:&#10;Verificado:&#10;Solução:&#10;Equipamento:"></textarea>
+      </label>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
