@@ -1,101 +1,92 @@
-const STORAGE_KEY = "registro-ligacoes-v1";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro de Ligações — Atendimento</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-const entriesEl = document.getElementById("entries");
-const template = document.getElementById("entryTemplate");
-const dateInput = document.getElementById("logDate");
-const saveStatus = document.getElementById("saveStatus");
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">●</span>
+        <div>
+          <h1>Registro de Ligações</h1>
+          <p class="brand-sub">Suporte Técnico · Autotrac</p>
+        </div>
+      </div>
+      <label class="date-field">
+        <span>Data</span>
+        <input type="date" id="logDate">
+      </label>
+    </div>
+  </header>
 
-let saveTimer = null;
+  <div class="summary-bar">
+    <div class="summary-inner">
+      <span id="summaryText">0 ligações hoje</span>
+      <span id="summaryPending" class="pending-badge" hidden></span>
+    </div>
+  </div>
 
-function todayISO() {
-  const d = new Date();
-  return d.toISOString().slice(0, 10);
-}
+  <main class="container">
+    <div id="entries"></div>
 
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch (e) {
-    console.error("Falha ao ler dados salvos:", e);
-    return null;
-  }
-}
+    <button id="addEntry" class="add-btn" type="button">
+      <span class="add-btn-icon">+</span> Nova ligação
+    </button>
+  </main>
 
-function saveState() {
-  const entries = [...entriesEl.querySelectorAll(".entry")].map((el) => ({
-    telefone: el.querySelector(".f-telefone").value,
-    nome: el.querySelector(".f-nome").value,
-    colar: el.querySelector(".f-colar").value,
-  }));
-  const state = { date: dateInput.value, entries };
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    saveStatus.textContent = "Salvo neste navegador";
-  } catch (e) {
-    console.error("Falha ao salvar:", e);
-    saveStatus.textContent = "Não foi possível salvar";
-  }
-}
+  <footer class="bottombar">
+    <div class="bottombar-left">
+      <button id="clearAll" class="ghost-btn" type="button">Limpar tudo</button>
+      <button id="exportBtn" class="ghost-btn" type="button">Exportar backup</button>
+      <button id="importBtn" class="ghost-btn" type="button">Importar</button>
+      <input type="file" id="importFile" accept="application/json" hidden>
+    </div>
+    <span class="save-status" id="saveStatus">Salvo neste navegador</span>
+  </footer>
 
-function scheduleSave() {
-  saveStatus.textContent = "Salvando…";
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(saveState, 400);
-}
+  <template id="entryTemplate">
+    <article class="entry" data-id="">
+      <div class="entry-head">
+        <span class="entry-index">01</span>
+        <div class="entry-fields">
+          <label>
+            <span>Telefone</span>
+            <input type="tel" class="f-telefone" placeholder="(00) 00000-0000">
+          </label>
+          <label>
+            <span>Nome</span>
+            <input type="text" class="f-nome" placeholder="Nome do cliente">
+          </label>
+        </div>
+        <button class="remove-btn" type="button" title="Remover ligação">✕</button>
+      </div>
+      <label class="paste-field">
+        <span>Colar aqui</span>
+        <textarea class="f-colar" rows="5" placeholder="Situação:&#10;Verificado:&#10;Solução:&#10;Equipamento:"></textarea>
+      </label>
+      <label class="lancado-field">
+        <input type="checkbox" class="f-lancado">
+        <span>Lançado no sistema</span>
+      </label>
+    </article>
+  </template>
 
-function renumber() {
-  [...entriesEl.querySelectorAll(".entry")].forEach((el, i) => {
-    el.querySelector(".entry-index").textContent = String(i + 1).padStart(2, "0");
-  });
-}
+  <div class="modal-overlay" id="newDayModal" hidden>
+    <div class="modal">
+      <h2>Novo dia detectado</h2>
+      <p id="newDayText"></p>
+      <div class="modal-actions">
+        <button id="newDayKeep" class="ghost-btn" type="button">Manter ligações antigas</button>
+        <button id="newDayFresh" class="primary-btn" type="button">Começar o dia em branco</button>
+      </div>
+    </div>
+  </div>
 
-function addEntry(data = {}) {
-  const node = template.content.cloneNode(true);
-  const entry = node.querySelector(".entry");
-
-  entry.querySelector(".f-telefone").value = data.telefone || "";
-  entry.querySelector(".f-nome").value = data.nome || "";
-  entry.querySelector(".f-colar").value = data.colar || "";
-
-  entry.querySelectorAll("input, textarea").forEach((f) => {
-    f.addEventListener("input", scheduleSave);
-  });
-
-  entry.querySelector(".remove-btn").addEventListener("click", () => {
-    entry.remove();
-    renumber();
-    saveState();
-  });
-
-  entriesEl.appendChild(node);
-  renumber();
-}
-
-document.getElementById("addEntry").addEventListener("click", () => {
-  addEntry();
-  saveState();
-  const cards = entriesEl.querySelectorAll(".entry");
-  cards[cards.length - 1].querySelector(".f-telefone").focus();
-});
-
-document.getElementById("clearAll").addEventListener("click", () => {
-  if (!confirm("Limpar todas as ligações registradas hoje? Essa ação não pode ser desfeita.")) return;
-  entriesEl.innerHTML = "";
-  addEntry();
-  dateInput.value = todayISO();
-  saveState();
-});
-
-dateInput.addEventListener("input", scheduleSave);
-
-// ---- init ----
-const saved = loadState();
-if (saved && saved.entries && saved.entries.length) {
-  dateInput.value = saved.date || todayISO();
-  saved.entries.forEach((e) => addEntry(e));
-} else {
-  dateInput.value = todayISO();
-  addEntry();
-}
+  <script src="script.js"></script>
+</body>
+</html>
