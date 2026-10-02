@@ -22,6 +22,9 @@
           <span>Data</span>
           <input type="date" id="logDate">
         </label>
+        <select id="dayPicker" class="day-picker" title="Ver outro dia">
+          <option value="">Dias salvos…</option>
+        </select>
         <button id="themeToggle" class="theme-toggle" type="button" title="Alternar tema"></button>
       </div>
     </div>
@@ -44,7 +47,7 @@
 
   <footer class="bottombar">
     <div class="bottombar-left">
-      <button id="clearAll" class="ghost-btn" type="button">Limpar tudo</button>
+      <button id="clearAll" class="ghost-btn" type="button">Limpar este dia</button>
       <button id="exportBtn" class="ghost-btn" type="button">Exportar backup</button>
       <button id="importBtn" class="ghost-btn" type="button">Importar</button>
       <input type="file" id="importFile" accept="application/json" hidden>
@@ -81,11 +84,11 @@
 
   <div class="modal-overlay" id="newDayModal" hidden>
     <div class="modal">
-      <h2>Novo dia detectado</h2>
+      <h2>Novo dia</h2>
       <p id="newDayText"></p>
       <div class="modal-actions">
-        <button id="newDayKeep" class="ghost-btn" type="button">Manter ligações antigas</button>
-        <button id="newDayFresh" class="primary-btn" type="button">Começar o dia em branco</button>
+        <button id="newDayKeep" class="ghost-btn" type="button"></button>
+        <button id="newDayFresh" class="primary-btn" type="button">Começar hoje em branco</button>
       </div>
     </div>
   </div>

@@ -147,6 +147,17 @@ body {
   font-size: 0.85rem;
 }
 
+.day-picker {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  background: var(--header-field-bg);
+  border: 1px solid var(--header-field-border);
+  color: var(--header-fg);
+  border-radius: 6px;
+  padding: 6px 8px;
+  max-width: 130px;
+}
+
 .theme-toggle {
   border: 1px solid var(--header-field-border);
   background: var(--header-field-bg);
@@ -484,4 +495,49 @@ input:focus, textarea:focus {
   .entry-index {
     margin-top: 0;
   }
+  .day-picker {
+    max-width: 100px;
+  }
+}
+
+/* ---------- Print ---------- */
+
+@media print {
+  body { background: #fff; color: #000; }
+  .topbar-right .day-picker,
+  .theme-toggle,
+  .add-btn,
+  .remove-btn,
+  .bottombar,
+  .summary-bar .pending-badge {
+    display: none !important;
+  }
+  .topbar {
+    background: #fff !important;
+    color: #000 !important;
+    border-bottom: 2px solid #000;
+  }
+  .brand-sub, .date-field, .date-field span { color: #000 !important; }
+  .date-field input {
+    background: #fff !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+  }
+  .summary-bar { border-bottom: 1px solid #000; }
+  .entry {
+    border: 1px solid #000 !important;
+    background: #fff !important;
+    break-inside: avoid;
+  }
+  .entry-index {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000;
+  }
+  input, textarea {
+    border: 1px solid #999 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .container { padding-bottom: 20px; }
 }
