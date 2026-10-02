@@ -1,4 +1,39 @@
 const STORAGE_KEY = "registro-ligacoes-v1";
+const THEME_KEY = "registro-ligacoes-theme";
+
+// ---- Tema claro/escuro ----
+const themeToggle = document.getElementById("themeToggle");
+
+function systemPrefersDark() {
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+function applyTheme(theme) {
+  // theme: "light" | "dark" | null (segue o sistema)
+  if (theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+  }
+  const isDark = theme ? theme === "dark" : systemPrefersDark();
+  themeToggle.textContent = isDark ? "☀️" : "🌙";
+  themeToggle.title = isDark ? "Mudar para tema claro" : "Mudar para tema escuro";
+}
+
+function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  applyTheme(saved);
+}
+
+themeToggle.addEventListener("click", () => {
+  const current = localStorage.getItem(THEME_KEY);
+  const currentlyDark = current ? current === "dark" : systemPrefersDark();
+  const next = currentlyDark ? "light" : "dark";
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+});
+
+initTheme();
 
 const entriesEl = document.getElementById("entries");
 const template = document.getElementById("entryTemplate");

@@ -9,11 +9,63 @@
   --accent-soft: #DCEEE7;
   --border: #D8DEDD;
   --danger: #B3432B;
+  --danger-soft: #F5E6E2;
+  --lancado-bg: #FBFDFC;
+  --lancado-border: #BFDDD3;
+  --pending-fg: #A45A1F;
+  --pending-bg: #FBEBD9;
+  --accent-hover: #176B54;
+
+  --header-bg: #16232C;
+  --header-fg: #FFFFFF;
+  --header-sub: #9FB3AC;
+  --header-field-bg: #22333F;
+  --header-field-border: #33454F;
 
   --sans: 'Inter', system-ui, -apple-system, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
 
   color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #121A20;
+  --surface: #1B262E;
+  --ink: #E7EDEB;
+  --muted: #8FA09B;
+  --accent: #35C19A;
+  --accent-soft: #1E3630;
+  --border: #2B3942;
+  --danger: #E08A6E;
+  --danger-soft: #3A2A28;
+  --lancado-bg: #17221F;
+  --lancado-border: #2E4A40;
+  --pending-fg: #E8A765;
+  --pending-bg: #3A2D1A;
+  --accent-hover: #46D6AC;
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121A20;
+    --surface: #1B262E;
+    --ink: #E7EDEB;
+    --muted: #8FA09B;
+    --accent: #35C19A;
+    --accent-soft: #1E3630;
+    --border: #2B3942;
+    --danger: #E08A6E;
+    --danger-soft: #3A2A28;
+    --lancado-bg: #17221F;
+    --lancado-border: #2E4A40;
+    --pending-fg: #E8A765;
+    --pending-bg: #3A2D1A;
+    --accent-hover: #46D6AC;
+
+    color-scheme: dark;
+  }
 }
 
 * { box-sizing: border-box; }
@@ -31,8 +83,8 @@ body {
 /* ---------- Top bar ---------- */
 
 .topbar {
-  background: var(--ink);
-  color: #fff;
+  background: var(--header-bg);
+  color: var(--header-fg);
 }
 
 .topbar-inner {
@@ -68,7 +120,13 @@ body {
 .brand-sub {
   margin: 2px 0 0;
   font-size: 0.8rem;
-  color: #9FB3AC;
+  color: var(--header-sub);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .date-field {
@@ -76,17 +134,32 @@ body {
   align-items: center;
   gap: 8px;
   font-size: 0.85rem;
-  color: #C9D3D0;
+  color: var(--header-sub);
 }
 
 .date-field input {
   font-family: var(--mono);
-  background: #22333F;
-  border: 1px solid #33454F;
-  color: #fff;
+  background: var(--header-field-bg);
+  border: 1px solid var(--header-field-border);
+  color: var(--header-fg);
   border-radius: 6px;
   padding: 6px 10px;
   font-size: 0.85rem;
+}
+
+.theme-toggle {
+  border: 1px solid var(--header-field-border);
+  background: var(--header-field-bg);
+  color: var(--header-fg);
+  border-radius: 6px;
+  padding: 6px 9px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
 }
 
 .date-field input::-webkit-calendar-picker-indicator {
@@ -116,8 +189,8 @@ body {
   font-family: var(--mono);
   font-size: 0.72rem;
   font-weight: 600;
-  color: #A45A1F;
-  background: #FBEBD9;
+  color: var(--pending-fg);
+  background: var(--pending-bg);
   border-radius: 999px;
   padding: 2px 9px;
 }
@@ -240,8 +313,8 @@ input:focus, textarea:focus {
 }
 
 .entry.is-lancado {
-  background: #FBFDFC;
-  border-color: #BFDDD3;
+  background: var(--lancado-bg);
+  border-color: var(--lancado-border);
 }
 
 .entry:not(.is-lancado) {
@@ -260,7 +333,7 @@ input:focus, textarea:focus {
 }
 
 .remove-btn:hover {
-  background: #F5E6E2;
+  background: var(--danger-soft);
   color: var(--danger);
 }
 
@@ -335,12 +408,12 @@ input:focus, textarea:focus {
 
 #clearAll:hover {
   color: var(--danger);
-  background: #F5E6E2;
+  background: var(--danger-soft);
 }
 
 .save-status {
   font-size: 0.75rem;
-  color: #9AA8A3;
+  color: var(--muted);
   white-space: nowrap;
 }
 
@@ -396,7 +469,7 @@ input:focus, textarea:focus {
 }
 
 .primary-btn:hover {
-  background: #176B54;
+  background: var(--accent-hover);
 }
 
 .modal-actions .ghost-btn {
